@@ -1,10 +1,7 @@
 import { Injectable } from '@nestjs/common';
-import { PrismaClient } from '@prisma/client';
 
 @Injectable()
 export class TodoService {
-  constructor(private readonly prisma: PrismaClient) {}
-
   getHelloVisitor(): string {
     return 'Hello from TodoService!';
   }
@@ -13,51 +10,38 @@ export class TodoService {
     return 'Hello GOD! The awesome Admin!';
   }
 
-  async getTodos(): Promise<any[]> {
-    return await this.prisma.tasks.findMany();
+  getTodos(): string {
+    return 'Todos';
   }
 
-  async getTodoById(id: string): Promise<any> {
-    return await this.prisma.tasks.findUnique({
-      where: { id },
-    });
+  getTodo(): string {
+    return 'Todo';
   }
 
-  async createTodo(data: {
-    title: string;
-    description?: string;
-    status: string;
-  }): Promise<any> {
-    return await this.prisma.tasks.create({
-      data,
-    });
+  createTodo(): string {
+    return 'Create Todo';
   }
 
-  async updateTodo(
-    id: string,
-    data: { title?: string; description?: string },
-  ): Promise<any> {
-    return await this.prisma.tasks.update({
-      where: { id },
-      data,
-    });
+  updateTodo(): string {
+    return 'Update Todo';
   }
 
-  async deleteTodo(id: string): Promise<any> {
-    return await this.prisma.tasks.delete({
-      where: { id },
-    });
+  deleteTodo(): string {
+    return 'Delete Todo';
   }
 
-  async listAllTodos(): Promise<any[]> {
-    return await this.prisma.tasks.findMany();
+  listAllTodos(): string {
+    // Implement logic to list all todos
+    return 'List of all todos';
   }
 
-  async getTodoStatus(id: string): Promise<string | null> {
-    const todo = await this.prisma.tasks.findUnique({
-      where: { id },
-      select: { status: true },
-    });
-    return todo?.status || null;
+  getTodoById(): string {
+    // Implement logic to get a todo by ID
+    return 'Details of a specific todo';
+  }
+
+  getTodoStatus(): string {
+    // Implement logic to get the status of a todo
+    return 'Status of a specific todo';
   }
 }
