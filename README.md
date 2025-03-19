@@ -1,75 +1,95 @@
-## Description
+# Backend Todo com NestJS --
 
-[Nest](https://github.com/nestjs/nest) framework TypeScript starter repository.
+Este é um projeto de backend para um sistema de gerenciamento de tarefas (To-Do) desenvolvido com o framework [NestJS](https://nestjs.com/). Ele utiliza autenticação e controle de acesso baseado em papéis (RBAC - Role-Based Access Control) para gerenciar permissões de usuários.
 
-## Project setup
+## Recursos Principais
+
+- **Autenticação JWT**: Login seguro com tokens JWT.
+- **RBAC (Role-Based Access Control)**: Controle de acesso baseado em papéis, permitindo diferentes níveis de permissões para usuários.
+- **CRUD de Tarefas**: Criação, leitura, atualização e exclusão de tarefas.
+- **Arquitetura Modular**: Código organizado e escalável.
+
+## Pré-requisitos
+
+Certifique-se de ter as seguintes ferramentas instaladas:
+
+- [Docker](https://www.docker.com/)
+- [Docker Compose](https://docs.docker.com/compose/)
+
+## Como Rodar o Projeto com Docker
+
+1. Clone este repositório:
+
+   ```bash
+   git clone https://github.com/seu-usuario/backend-todo-nestjs.git
+   cd backend-todo-nestjs
+   ```
+2. Crie um arquivo `.env` na raiz do projeto com as variáveis de ambiente necessárias. Use o arquivo `.env.example` como referência.
+3. Construa e inicie os contêineres Docker:
+
+   ```bash
+   docker-compose up --build
+   ```
+4. O backend estará disponível em `http://localhost:3000`.
+
+## Endpoints Principais
+
+- **Autenticação**:
+  - `POST /auth/login`: Realiza login e retorna um token JWT.
+- **Tarefas**:
+  - `GET /tasks`: Lista todas as tarefas (requer permissão).
+  - `POST /tasks`: Cria uma nova tarefa (requer permissão).
+  - `PUT /tasks/:id`: Atualiza uma tarefa existente (requer permissão).
+  - `DELETE /tasks/:id`: Exclui uma tarefa (requer permissão).
+
+## Controle de Acesso (RBAC)
+
+O sistema utiliza RBAC para gerenciar permissões. Existem três papéis principais:
+
+- **Admin**: Acesso total ao sistema.
+- **Manager**: Pode gerenciar tarefas, mas com restrições.
+- **User**: Pode visualizar e gerenciar apenas suas próprias tarefas.
+
+As permissões são verificadas em cada endpoint para garantir que os usuários só possam realizar ações permitidas pelo seu papel.
+
+## Testes
+
+Para rodar os testes, utilize o seguinte comando:
 
 ```bash
-$ npm install
+docker-compose exec app npm run test
 ```
 
-## Compile and run the project
+## Roadmap
 
-```bash
-# development
-$ npm run start
+Aqui estão os próximos passos e funcionalidades planejadas para o projeto:
 
-# watch mode
-$ npm run start:dev
+- [ ] Adicionar suporte a internacionalização (i18n).
+- [ ] Criar documentação detalhada da API com Swagger.
+- [ ] Melhorar a cobertura de testes automatizados.
+- [ ] Implementar suporte a tarefas recorrentes.
 
-# production mode
-$ npm run start:prod
+## Rotas
+
+### Obter login
+
+**POST** `http://localhost:3000/auth/login`
+
+**Corpo da requisição:**
+
+```json
+{
+	"username": "test",
+	"password": "test"
+}
 ```
 
-## Run tests
+**Você terá um Bearer token para utilizar:**
 
-```bash
-# unit tests
-$ npm run test
-
-# e2e tests
-$ npm run test:e2e
-
-# test coverage
-$ npm run test:cov
+```json
+{"access_token":"eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpYXQiOjE3NDIzODY1MDMsImV4cCI6MTc0MjM4NjU2M30.5slOlF4lBOsZ_fj2TYm6hUpoF-2gpByYgTwJbr4vMY0"}
 ```
 
-## Deployment
+### Listar todos os to-dos
 
-When you're ready to deploy your NestJS application to production, there are some key steps you can take to ensure it runs as efficiently as possible. Check out the [deployment documentation](https://docs.nestjs.com/deployment) for more information.
-
-If you are looking for a cloud-based platform to deploy your NestJS application, check out [Mau](https://mau.nestjs.com), our official platform for deploying NestJS applications on AWS. Mau makes deployment straightforward and fast, requiring just a few simple steps:
-
-```bash
-$ npm install -g mau
-$ mau deploy
-```
-
-With Mau, you can deploy your application in just a few clicks, allowing you to focus on building features rather than managing infrastructure.
-
-## Resources
-
-Check out a few resources that may come in handy when working with NestJS:
-
-- Visit the [NestJS Documentation](https://docs.nestjs.com) to learn more about the framework.
-- For questions and support, please visit our [Discord channel](https://discord.gg/G7Qnnhy).
-- To dive deeper and get more hands-on experience, check out our official video [courses](https://courses.nestjs.com/).
-- Deploy your application to AWS with the help of [NestJS Mau](https://mau.nestjs.com) in just a few clicks.
-- Visualize your application graph and interact with the NestJS application in real-time using [NestJS Devtools](https://devtools.nestjs.com).
-- Need help with your project (part-time to full-time)? Check out our official [enterprise support](https://enterprise.nestjs.com).
-- To stay in the loop and get updates, follow us on [X](https://x.com/nestframework) and [LinkedIn](https://linkedin.com/company/nestjs).
-- Looking for a job, or have a job to offer? Check out our official [Jobs board](https://jobs.nestjs.com).
-
-## Support
-
-Nest is an MIT-licensed open source project. It can grow thanks to the sponsors and support by the amazing backers. If you'd like to join them, please [read more here](https://docs.nestjs.com/support).
-
-## Stay in touch
-
-- Author - [Kamil Myśliwiec](https://twitter.com/kammysliwiec)
-- Website - [https://nestjs.com](https://nestjs.com/)
-- Twitter - [@nestframework](https://twitter.com/nestframework)
-
-## License
-
-Nest is [MIT licensed](https://github.com/nestjs/nest/blob/master/LICENSE).
+**GET** `http://localhost:3000/todo/all`
